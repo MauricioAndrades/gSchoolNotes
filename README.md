@@ -125,6 +125,12 @@ Properties determine the style that will be applied.
 ![CSS Syntax Pic]
 (http://learn.shayhowe.com/assets/images/courses/html-css/building-your-first-web-page/css-syntax-outline.png)
 
+##Bonus:
+
+```html
+<p hidden>This paragraph should be hidden.</p> #hide html element.
+```
+
 # Working With Selectors:
 
 ##Type Selectors:
@@ -252,3 +258,5 @@ CSS resets take every common HTML element with a predefined style and provide on
     }
 ```
 
+![Git Movement Method]
+(https://git-scm.com/book/en/v2/book/02-git-basics/images/lifecycle.png)
