@@ -703,7 +703,7 @@ When applied to floating elements, it moves the margin edge of the element below
 .col-sm-
 .col-xs-
 
-#2015.11.09
+#------------------2015.11.09
 
 ```html
     <!doctype html>
