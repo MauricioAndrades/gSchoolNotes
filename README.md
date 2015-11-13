@@ -851,3 +851,318 @@ You can access object properties (NOT METHODS) using ['square notation']
 
 
 
+#OBJECT CONSTRUCTOR
+
+```js
+
+    function Hotel(name, rooms, booked) {
+        this.name = name,
+        this.rooms = rooms,
+        this.booked = booked,
+        this.avail = function() {
+            return this.rooms - this.booked;
+        }
+    };
+
+var keatingHotel = new Hotel ('Keating', 30, 25);
+
+//adding or removing properties
+hotel.gym = true;
+hotel.pool = true;
+delete hotel.booked;
+
+```
+
+#LITERAL NOTATION & O.CONSTRUCTOR NOTATION
+```js
+    //literal notation
+    var hotel = {};
+    hotel.name = 'keating';
+    hotel.rooms = 40;
+    //object constructor
+    var hotel = new Object();
+    hotel.name = 'Keating';
+    hotel.rooms = 40;
+```
+
+#CREATING OBJECT WITH PROPERTIES AND METHODS:
+```js
+    //LITERAL NOTATION
+    var = hotel = {
+        name: 'Keating',
+        rooms: 40;
+        checkavail(): function() {
+            return this.rooms - this.booked;
+        }
+    };
+    //OBJECT CONSTRUCTOR NOTATION
+    function Hotel(name, rooms, booked) {
+        this.name = name;
+        this.rooms = rooms;
+        this.booked = booked;
+        this.checkavail = function() {
+            return this.rooms - this.booked;
+        };
+    }
+    var keatingHotel = new Hotel('keating', 30, 40);
+    var hardrock = new Hotel('hardrock', 33, 50);
+```
+
+global scope function default object is the window.
+
+###function to return properties of the window object
+
+```js
+    function windowSize() {
+        var width = this.innerWidth;
+        var height = this.innerHeight;
+        return [height, width];
+    }
+
+    windowSize();
+    //[311, 1139]
+```
+
+## OBJECT METHODS
+
+FUNCTION DEFINED INSIDE AN OBJECT:
+
+```js
+    //A METHOD OF AN OBJ
+    
+    var shape = {
+        width: 600,
+        height: 400,
+        //getArea is method of shape.
+        getArea: function() {
+            return this.width * this.height;
+        }
+    };
+
+    // this.width === shape.width
+    // this.height === shape.height
+
+```
+
+##FUNCTION EXPRESSION AS METHOD:
+```js
+    
+    var width = 600;
+    var shape = {width: 300};
+
+    //function expression as method
+    var showWidth = function() {
+        console.log(this.width);
+    };
+
+    shape.getWidth = showWidth;
+    console.log(shape.getWidth());
+    // 300
+
+```
+
+##Iterating through Objects:
+
+```js
+    for (var key in obj) {
+        console.log(key);
+    }
+```
+
+
+## RECAP STORING DATA:
+
+#JQUERY
+
+`$()`
+
+JQ performs silimar task to traditional DOM query. Simpler syntax.
+You can store JQ object in a variable, you can use jQ methods and properties.
+
+
+```js
+
+$('li.hot').addClass('complete');
+
+```
+
+```js
+    
+    $( 'header' ).addClass('headline'); //select all h1-h6 headings and adds class headline
+    $( 'li:lt(3)').hide().fadeIn(1500); //selects first 3 list itmes and does two things.
+                                        //fades element into view. hides them.
+    $('...el...').on('click', function() {
+        $(this).remove():
+        }):
+
+```
+
+
+
+
+
+2015.11.10 
+
+#Liz Lecture: Parsing Query Strings
+
+index.html?name=liz&occupation=programmer&bio=yo%20
+//called url encoding
+
+
+document.location.search
+document.location.href
+
+```js
+        var search = "?name=liz&occupation=programmer&bio=yo%20guys&stuff=earrings";
+
+        // {"name" : "liz", "occupation" : "programmer", "bio" : "yo guys"}
+
+        function parseQueryString (search) {
+            search = search.replace("?", "");
+            var searchParts = search.split("&");
+            //console.log(searchParts)
+
+            var body = {};
+
+            for (var i = 0; i < searchParts.length; i++) {
+                var parts = searchParts[i].split("=");
+                console.log(parts[0]);
+                body[parts[0]] = parts[1];
+            }
+
+            return body;
+
+        }
+
+        var myForm = parseQueryString(search);
+        console.log(myForm);
+
+        //console.log(myForm["name"]);
+
+```
+
+#THE INTERNET AND HOW IT WORKS
+
+#HTML FORMS:
+
+Forms exist for 3 major purposes. `commerce` `community` `poductivity`
+
+##THE SIX COMPONENTS OF A WEBFORM:
+1. labels
+2. inputfields
+3. actions
+4. help
+5. messages
+6. validation
+
+## 3 MAIN ASPECTS OF A FORM:
+1. relationship: forms establish a relationship between an organization and a user.
+2. conversation: dialogue
+3. appereance: 
+
+
+##FORM VALIDATION:
+
+turn off form validation
+
+```html
+        <form novalidate>
+             <input type="email" id="addr">
+             <input type="submit" value="Subscribe">
+        </form>
+```
+
+```html
+    <form action="http://foo.com" method="get|post">
+    <!-- same server different page -->
+    <form action="/somewhere_else" method="post">
+    <!-- same page OLD method -->
+    <form action="#" method="get">
+```
+
+
+##get method
+
+Get: Browser asks the server to send back a given resource. Data send to the server
+is appended to the URL.
+"hey server I want to get his resource"
+
+```html
+        <form action="http://foo.com" method="get">
+            <input name="say" value="hi">
+            <input name="to" value="mom">
+            <button>sendmygreeting</button>
+        </form>
+
+    <!-- GET /?say=hi&to=mom HTTP/1.1 -->
+```
+
+##post method
+
+Post: Browser sends the server to ask for a response. "hey server look at this data and send me back a response"
+
+    POST / HTTP/1.1
+    Host: foo.com
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 13
+
+    say=Hi&to=Mom
+
+
+• send sensitive data using post, hides it from URL.
+
+#VALIDATING FORMS
+
+```js
+   $("#myForm").on("submit", function() {
+        //form validation here
+   });
+
+   //.on("blur")
+   // check field as soon as user is done typing.
+
+   $("myinput").on("blur", function() {
+        // do single input validation here
+   });
+
+
+   //getting FORM ELEMENTS VANILLA js
+    var phoneValue = $("#phone").val();
+
+    var form = document.querySelector('#some-form');
+    var input = document.querySelector('#some-input');
+
+    document.forms; //get all forms on page.
+    form.elements; //get all form elements.
+    input.type.toLowerCase(); //get input type (radio, checkbox, text, etc.)
+    input.value; //get input value.
+    input.name; //get input name.
+    input.checked; // get checked status of a checkbox
+    input.disabled; //get input disabled status
+
+    //jquery
+    var form = $('#some-form');
+    var input = $('#some-input');
+
+    input.val(); //get input val
+    input.getAttr('name'); //get input name
+    input[0].checked; //get the checked 
+
+```
+
+#ERRROR Handling
+```js
+    $("#myForm").on("submit", function(){
+
+        if (some_error_condition) {
+
+            var errDiv = $('<div class="error">Please fix your phone number</div>')
+
+            $("#myForm").append(errDiv);
+
+            return false; // This tells the submission not to happen
+        }
+    })
+
+```
+
