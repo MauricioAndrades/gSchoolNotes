@@ -1105,13 +1105,137 @@ A `nodelist` looks like an array but is really a `collection`.
     //[<li id=​"one" class=​"hot">​…​</li>​, <li id=​"two" class=​"hot">​pine nutes​</li>​, <li id=​"three" class=​"hot">​honey​</li>​, <li id=​"four">​balsamic vinegar​</li>​]
 ```
 
+###SELECTING AN ELEMENT FROM THE NODELIST:
+
+```js
+
+    var el = document.getElementsByClassName('hot');
+    if(elements.length >= 1) {
+        var firstItem = elements.item(0);
+    }
+
+    //OR PREFERRED
+
+    if(elements.length >= 1) {
+        var firstItem = elements[0];
+    }
+
+```
+
+###TRAVERSING THE DOM:
+
+1. parentNode
+2. previousSibling/nextSibling
+3. firstChild/lastChild
+
+These are properties of the current node. (not methods) they do not end in parenthesis. if properties used and 
+node doens't contain them, they will return null.
+
+
+###WHITESPACE NODES
+
+`document.getElementById('one').firstChild.nextSibling.nodeValue`
+
+
+#MANIPULATING DOM
+
+//writing dom
+
+```js
+    document.getElementById('one').innerHTML = '<em>json</em> sucks balls'
+```
+
+
+##METHOD: DOM MANIPULATION:
+
+###appendChild();
+```js
+    //create new el
+    var newEl = document.createElement('li') ;
+    //create text node
+    var newText = document.createTextNode('quinoa');
+    // find location to attach
+    var pos = document.getElementByTagName('ul')[0];
+    //attach
+    pos.appendChild(newEl);
+```
+
+###removeChild();
+```js
+var removeEl = document.getElementsByTagName('li')[3];
+var pNode = removeEl.parentNode;
+pNode.removeChild(removeEl);
+```
+
+###addAttribute:
+```js
+    
+    var firstItem = document.getElementById('one');
+    if(firstItem.hasAttribute('class') {
+        var attr = firstItem.getAttribute('class');
+        var el = document.getElementById('scriptResults');
+        el.innerHTML = '<p>the first item class is '+attr+'</p>';
+    })
+
+```
+
+###setAttribute()
+
+```js
+    var attr = firstItem.getAttribute('class');
+    var el = document.getElementById('scriptResults');
+    el.setAttribute('class', 'cool');
+
+```
 
 
 
+###removeAttribute();
+```js
+    
+    var firstItem = document.getElementById('one'); //get first item
+    if(firstItem.hasAttribute('class')) {
+        firstItem.removeAttribute('class');
+    }
 
+```
+
+#EVENT HANDLING.
+1. dom query
+2. binding
+3. scripting
+
+3 types of event handlers. Best __DOM LEVEL 2__
+
+##TRADITIONAL METHOD:
+
+    `element.[on]event = functionName;`
+
+```js
+    function checkUserName() { //define named function
+        var el = document.getElementById('username');
+        el.onblur = checkUserName; //call function parenthesis ommitedd
+}
+
+```
+
+```js
+    function checkUsername() {
+        var elMsg - document.getElementById('feedback');
+        if(this.value.length < 5) {
+            elMsg.textContent = 'username must be ...';
+        } else {
+            elMsg.textContent = '';
+        }
+    }
+
+    var elUsername = document.getElementById('username');
+    elUsername.onblur = checkUsername;
+```
 
 
 #JQUERY
+
 
 `$()`
 
