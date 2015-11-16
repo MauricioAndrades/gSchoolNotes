@@ -970,7 +970,146 @@ FUNCTION DEFINED INSIDE AN OBJECT:
 ```
 
 
+#GLOBAL OBJECTS NUMBERS:
+
+isNan() //checks if value is NaN
+toFixed() //rounds to specified decimal(returns string)
+toPrecision() //rounds to total number of places(returns string)
+toExponential() //returns a string representing a number
+
+##working with decimals:
+```js
+        var oNum = 10.3242;
+        console.log(oNum.toPrecision(3));
+        //10.3
+        console.log(oNum);
+        //10.3242
+```
+
+Math.PI         //ret approx pi.
+Math.round();   //rounds to int.
+Math.sqrt(n);   //ret sqr root + num.
+Math.ceil();    //rounds up to int.
+Math.floor();   // rounds down to int.
+Math.random()   // random num.
+
+#SIGNAL FLOW: 2015.11.15
+
+##SHORTCIRCUIT
+
+    false && anything - TRUE && TRUE so if first is false, second won't ever evaluate
+    true || anything  - TRUE OR TRUE so if first condition is true, why check second condition.
+
+*Switch is faster than if...else*
+
+## FALSY VALUES:
+
+```js
+    var highScore = false; //traditional Bool false.
+    var highScore = 0; //The Number 0;
+    var highScore = ''; //NaN
+    var highScore = 10/'score'; //empty value
+    var highScore; //a var with nothing assigned
+```
+
+##Checking Truthy:
+
+The presensce of an object or an array can be considered truthy.
+
+```js
+    if (document.getElementById('header')) {
+        //Found: do something.
+    } else {
+        //Not Found: do something else.
+    }
+
+    //  ABOVE STATEMENT NOT EQUAL TO:
+    if (document.getElementById('header') == true) //...
+    // this would return an object, which is truthy value but not
+    // equal to a Boolean value of true. 
+
+
+```
+
+
+
+CODE MOST LIKELY TO REUTRN `TRUE` first in `||`
+`FALSE` ANSWERS FIRST IN `&&` OPERATIONS.
+
+
+
+OPTIONS REQUIRING
+
+
 ## RECAP STORING DATA:
+
+
+2015.11.15 14.52.06PM 
+
+#DOM
+
+How broswers create models of HTML pages. & How JS can access and update the
+contents of an HTML page.
+
+##Attribute Nodes:
+
+Opening tags of HTML elements contain attr nodes. they are no decendents of HTML elements but rather
+part of the element.
+
+##Text Nodes
+Once you access the element node, you can access the text node they contain.
+
+###SELECTING INDIVIDUAL ELEMENTS: 
+```js
+    var el = getElementById();
+    var el = querySelector(); //uses CSS selector and returns 1st element
+
+```
+
+###SELECTING MULTIPLE ELEMENTS(NODELIST)
+```js
+    var el = getElementByClassName();
+    var el = getElementByTagName();
+    var el = querySelectorAll(); //use css selector, return all
+```
+
+###TRAVERSING DOM
+```js
+    var travEl = parentNode //select the parent of the current node;d
+    var prevSib = previousSibling/nextSibling;
+    var fChild = firstChild/lastChild;
+```
+
+###MANIPULATING THE DOM
+```js
+    var attr = hasAttribute(); //check if attr exist
+    var attr = getAttribute(); //get attr value
+    var attr = setAttribute(); // set attr
+    var attr = removeAttribute(); //remove attr
+```
+
+##CACHING DOM QUERIES
+
+Use variable to store result of DOM Querie.
+
+`var el = document.getElementById('#id')`
+
+##DOM QUERIES: NODE LISTS
+
+dom queries can return one element, or a node list. A collection of Nodes.
+A `nodelist` looks like an array but is really a `collection`.
+
+```js
+    document.querySelectorAll('li[id]') //returns all <li></li> el with [id] attributes
+    
+    //[<li id=​"one" class=​"hot">​…​</li>​, <li id=​"two" class=​"hot">​pine nutes​</li>​, <li id=​"three" class=​"hot">​honey​</li>​, <li id=​"four">​balsamic vinegar​</li>​]
+```
+
+
+
+
+
+
 
 #JQUERY
 
@@ -1166,3 +1305,23 @@ Post: Browser sends the server to ask for a response. "hey server look at this d
 
 ```
 
+#DATE OBJECT
+```js
+    var today = new Date();
+```
+
+
+
+
+
+#LOCAL STORAGE
+
+
+
+#WORKING METHODOLOGY
+
+
+1. important safely encourage retrospective.
+
+##12 pricipals of agile. 
+1.
