@@ -739,7 +739,7 @@ When applied to floating elements, it moves the margin edge of the element below
     </html>
 ```
 
-#multiple values out of single function
+##multiple values out of single function
 
 ```js
     
@@ -756,7 +756,7 @@ When applied to floating elements, it moves the margin edge of the element below
 ```
 
 
-#FUNCTION DECLARATION: (i.e named functions):
+##FUNCTION DECLARATION: (i.e named functions):
 
 ```js
 
@@ -768,7 +768,7 @@ When applied to floating elements, it moves the margin edge of the element below
 ```
 
 
-#FUNCTION EXPRESSION: (anonymous function):
+##FUNCTION EXPRESSION: (anonymous function):
 
 ```js
     var area = function(width, height) {
@@ -806,6 +806,50 @@ When applied to floating elements, it moves the margin edge of the element below
     2. stored in memory as long as webpage is loaded.
     3. only use for special cases, use local variables when possible.
 
+##FUNCTIONS: PASSING N NUMBER OF ARGUMENTS:
+
+```js
+    function sum() {
+        var result = 0; i = 0; len = arguments.length;
+
+        while(i<len){
+            result+=arguments[i];
+            i++;
+        } 
+        return result;
+    };
+
+    console.log(sum(1,2));
+    console.log(sum(4,5,6,7));
+```
+
+
+
+Because functions are {} they have properties. The # of arguments a function can take is stored in the len property of that
+object. len defines the functions `arity` 
+```js
+    function sum() {
+        var result = 0;
+        i = 0;
+        len = arguments.length;
+
+        while (i < len) {
+            result += arguments[i];
+            i++;
+        }
+        return result;
+    }
+
+console.log(sum(1,2));
+```
+
+
+
+
+
+
+
+
 #OBJECTS:
 1. in an object variables become properties.
 2. in an object fn() become methods()
@@ -835,6 +879,10 @@ When applied to floating elements, it moves the margin edge of the element below
     
 ```
 
+##CALLBACKS
+
+
+
 
 ##OBJECT properties:
 
@@ -852,6 +900,15 @@ You can access object properties (NOT METHODS) using ['square notation']
 
 
 #OBJECT CONSTRUCTOR
+
+A constructor is a function that is used with new to create an object.
+Advantage of constructor is that objects created using constructors have
+the same properties.
+
+A constructor is a function/ and it's name should be in CAPITALS.
+
+obj.constructor;
+//Function: Cat
 
 ```js
 
@@ -1233,6 +1290,78 @@ pNode.removeChild(removeEl);
     elUsername.onblur = checkUsername;
 ```
 
+###EVENT LISTENERS: NEW BUT NOT SUPPORTED IN OLDER BROWSERS:
+
+element.addEventListener('event', functionName [, Boolean]) //Boolean usually set to false
+```js
+
+    function checkUsername() {
+        //code to check name
+    }
+    var el = document.getElementById('username');
+    el.addEventListener('blur', checkUsername, false);
+
+    //example
+
+    function checkUsername() {
+        var elMsg = document.getElementById('feedback');
+        if (this.value.length < 5) {
+            elMsg.textContent = 'username blah blah';
+        } else {
+            elMsg.textContent = '';
+        }
+    }
+
+    var elUserName = document.getElementById('username');
+    //call checkUsername when elUserName loses focus.
+    elUserName.addEventListener('blur', checkUsername, false);
+
+    //OR
+
+    el.addEventListener('blur', function() {
+        checkUserName(5);
+        }, false);
+
+    //better implementation
+
+    var elUserName = document.getElementById('username');
+    var elMsg = document.getElementById('feedback');
+
+    function checkUserName(minlength) {
+        if(elUsername.value.length < minlength) {
+            //set error message
+        elMsg.textContent = 'user name must be blah'
+        } else {
+            elMsg.innerHTML = '';
+        }
+    }
+
+    elUsername.addEventListener('blur', function() {
+        checkUserName(5);
+        }, false);
+```
+
+
+##EVENTOBJECT:
+
+```js
+    function checkUsername(e) {
+        var target = e.target; //get target of event
+    }
+    var el = document.getElementById('username');
+    el.addEventListener('blur', checkUsername, false);
+
+    //event listener with parameters
+
+    var target = e.target; //get target of event
+    var el = document.getElementById('username');
+    el.addEventListener('blur', function(e) {
+        checkUsername(e, 5);
+        }, false);
+```
+
+
+
 
 #JQUERY
 
@@ -1260,12 +1389,23 @@ $('li.hot').addClass('complete');
 
 ```
 
+###jquery implicit iteration:
+    ability to loop through all elements in a jquery selection.
+    `.each()`
 
+###shorthand for $(document).ready(function(){});
+```js
+    $(function() {
 
-
+        });
+```
 
 2015.11.10 
 
+##METHODS:
+
+.html() //retrieves html for only 1 element.
+.text() //retrieves text for all elements.
 #Liz Lecture: Parsing Query Strings
 
 index.html?name=liz&occupation=programmer&bio=yo%20
@@ -1275,6 +1415,7 @@ index.html?name=liz&occupation=programmer&bio=yo%20
 document.location.search
 document.location.href
 
+@
 ```js
         var search = "?name=liz&occupation=programmer&bio=yo%20guys&stuff=earrings";
 
@@ -1415,6 +1556,7 @@ Post: Browser sends the server to ask for a response. "hey server look at this d
 
 #ERRROR Handling
 ```js
+    
     $("#myForm").on("submit", function(){
 
         if (some_error_condition) {
@@ -1449,3 +1591,49 @@ Post: Browser sends the server to ask for a response. "hey server look at this d
 
 ##12 pricipals of agile. 
 1.
+
+#AJAX REQUESTS:
+
+make HTTP request using javascript you need an instance of a class.
+
+```js
+    
+    if (window.XMLHttpRequest) {
+        httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) { // IE 6 and older
+    httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+```
+
+next. decide what to do when you receive server response:
+
+```js
+    httpRequest.onreadystatechange = nameofFunction; //pass reference to function
+```
+
+or using anonymousfunction
+
+```js
+    httpRequest.onreadystatechange = function() {
+        //code
+    };
+```
+
+actually make the request:
+```js
+    httpRequest.open('GET', 'http://example.org/some.file', true);
+    httpRequest.send(null);
+```
+
+
+#2015.11.18 LIZ'S METHOD:
+
+1. make branch: git checkbout -b 'make-products'
+2. make static html: div class = row (add picture, basic layout etc)
+3. commit
+4. begin process of abstraction: use code(keep javascript out of html);
+
+LEGEND:
+
+Array.isArray(),
