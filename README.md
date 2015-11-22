@@ -881,9 +881,89 @@ console.log(sum(1,2));
 
 ##CALLBACKS
 
+```js
+function grabAndFreeze() {
+    showNowLoading(true);
+    var jsonData = getData('http://yoursever/data/messages.json');
+    // interface freezes
+    processData(jsonData);
+    showNowLoading(false);
+    doOtherStuff(); //not called till data fully loaded
+}
 
+function processData(jsonData) {
+    //do something with data
+    var count = jsonData.results ? jsonData.results.length : 0;
+    $('#counterMessage').text(["Fetched", count, "new items"].join(' '));
+    $('#resultsMessage').html(jsonData.results || "(No New Messages)");
+}
 
+//WITH CALLBACK jq get jason
 
+function processDataCB(jsondata) {
+    //callback update UI with results
+    showNowLoading(false);
+    var count = jsonData.results ? jsonData.results.length : 0;
+
+    $("#counterMessage").text(['Fetched', count, 'new items'].join(' '));
+    $('#results_messages').html(jsondata.results || '(no new messages)');
+
+}
+
+function grabAndGo() {
+    showNowLoading(true);
+    $('#results_messages').html(now_loading_image);
+    $.getJSON("http://yourserver.com/data/messages.json", processDataCB);
+     /* Call processDataCB when data is downloaded, no frozen User Interface! */
+    doOtherStuff(); // called immediately
+    }
+}
+```
+
+##CALLBACKS WITH CLOSURE
+
+Functions can be defined inside of other functions. The inner function has
+access to the vars and parameters of the outer function. If a reference to an
+inner function survives (for example, as a callback function), the outer
+function's vars also survive.
+
+KEY: the callback is treated like an Object, so you can change which Function to call
+based on the state of the system (like the Strategy Design Pattern).
+
+Often the callback needs to access state from the calling function using a
+`closure`, which is like the Worker needing to get information from the Manager
+before he can complete his Task. To create the closure, you can `inline` the
+function so it sees the data in the calling context
+
+```js
+    /* Grab messages, chat users, etc by changing dtable. Run callback cb when done.*/
+    function grab(dtable, cb) { 
+        if (null == dtable) { dtable = "messages"; }
+        var uiElem = "_" + dtable;
+        showNowLoading(true, dtable);
+        $('#results' + uiElem).html(now_loading_image);
+        $.getJSON("http://yourserver.com/user/"+dtable+".json", cb || function (jsondata) {
+           // Using a closure: can "see" dtable argument and uiElem variables above.
+           var count = jsondata.results ? jsondata.results.length : 0, 
+               counterMsg = ['Fetched', count, 'new', dtable].join(' '),
+               // no new chatters/messages/etc
+               defaultResultsMsg = ['(no new ', dtable, ')'].join(''); 
+           showNowLoading(false, dtable);
+           $('#counter' + uiElem).text(counterMsg);
+           $('#results'+ uiElem).html(jsondata.results || defaultResultsMsg);
+        });
+        /* User Interface calls cb when data is downloaded */
+
+        do_other_stuff(); // called immediately
+    }
+
+    // update results_chatters when chatters.json data is downloaded:
+    grab("chatters"); 
+    // update results_messages when messages.json data is downloaded
+    grab("messages"); 
+    // call myCallback(jsondata) when "history.json" data is loaded:
+    grab("history", myCallback); 
+```
 ##OBJECT properties:
 
 ```js
@@ -909,6 +989,10 @@ A constructor is a function/ and it's name should be in CAPITALS.
 
 obj.constructor;
 //Function: Cat
+
+##OBJECT PROTOTYPES:
+Are like recipes for objects.
+
 
 ```js
 
@@ -1103,7 +1187,48 @@ OPTIONS REQUIRING
 
 2015.11.15 14.52.06PM 
 
-#DOM
+#CLOSURE FUNCTIONS:
+Closures are simply func- tions that access data outside their own scope
+
+#DESIGN PATTERNS:
+
+##MODULE PATTERN
+```js
+    
+            var yourObject = (function() {
+                // private data variables
+                return {
+                    // public methods and properties
+    }; u }());
+
+    //example
+
+    var person = (function() { u var age = 25;
+        var age = 25;
+
+        return {
+            name: "Nicholas",
+            getAge: function() {
+                return age;
+            },
+            growOlder: function() {
+                age++;
+            } 
+        };
+    }());
+    console.log(person.name); //Nicholas
+    console.log(person.getAge()); // 25
+    person.age = 100;
+    console.log(person.getAge()); //25
+    person.growOlder();
+    console.log(person.getAge()); //26
+
+```
+
+
+
+
+#DOM 
 
 How broswers create models of HTML pages. & How JS can access and update the
 contents of an HTML page.
@@ -1406,6 +1531,69 @@ $('li.hot').addClass('complete');
 
 .html() //retrieves html for only 1 element.
 .text() //retrieves text for all elements.
+
+##JQuery DOM Manipulation:
+
+```js
+    //create variable and store jquery object inside of it.
+    var $newFragment = $('<li>');
+
+    var $newItem = $('<li class="new">item</li>');
+    //add it to page
+    //.before()
+    //.after()
+    //.prepend() insert inside:after opening tag selected element
+    //.append() insert content inside:before opening tag inside the selected 
+
+    $(function() {
+        $('ul').before('<p class="notice">Just Updated</p>');
+        $('li.hot').prepend('+ ');
+        var $newListItem = $('<li><em>glutten-free</em> soy sauce</li>');
+        $('li:last').after($newListItem);
+        });
+
+
+```
+
+##CREATING OR ACCESSING ATTRIBUTES:
+```js
+    //work with any attribute
+    //.attr() or .removeAttr()
+
+    $('li#one').attr('id'); //get id of li#one
+
+```
+
+###JQUERY EDITING CSS
+```js
+    $(function() {
+        var bgColor = $('li').css('background-color');
+        $('ul').append('<p>Color was: '+bgColor+'</p>');
+        $('li').css({
+            'background-color': '#c5a996',
+            'border': '1px solid #fff',
+            'color': '#000',
+            'font-family': 'Georgia',
+            'padding-left': '+=75'
+            });
+        });
+```
+
+
+
+##JQUERY .EACH()
+
+```js
+    $(function() {
+        $('li').each(function() { //create jqobj containing all 'li' + anonFunc
+            var ids = this.id; //this = current element node in loop.
+            $(this).append(' <span class="order">' + ids + '</span>'); //call anonFunc for each of the list items.
+            });
+        });
+```
+
+
+
 #Liz Lecture: Parsing Query Strings
 
 index.html?name=liz&occupation=programmer&bio=yo%20
@@ -1593,6 +1781,39 @@ Post: Browser sends the server to ask for a response. "hey server look at this d
 1.
 
 #AJAX REQUESTS:
+With the jQuery AJAX methods, you can request text, HTML, XML, or JSON from a
+remote server using both HTTP Get and HTTP Post - And you can load the external
+data directly into the selected HTML elements.
+
+```js
+    //JQuery Load
+    $(selector).load(URL,data,callback);
+```
+
+```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("button").click(function(){
+            $("#div1").load("demo_test.txt");
+        });
+    });
+    </script>
+    </head>
+    <body>
+
+    <div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
+
+    <button>Get External Content</button>
+
+    </body>
+    </html>
+
+```
+Loads data into a page in background and displays it on the webpage.
 
 make HTTP request using javascript you need an instance of a class.
 
@@ -1626,7 +1847,29 @@ actually make the request:
     httpRequest.send(null);
 ```
 
+###JQUERY AJAX METHODS:
 
+```js
+    $.get(url[, data][, callback][, type]) 
+    $.post(url[, data][, callback][, type])
+    $.getJSON(url[, data][, callback][, type])
+    $.getScript(url[, data][, callback][, type])
+```
+
+###AJAX CALLBACK
+```js
+$('#main-menu a').click(function(event) {
+      event.preventDefault();
+
+      $('#main').load(this.href + ' #main *', function(responseText, status) {
+         if (status === 'success') {
+            $('#notification-bar').text('The page has been successfully loaded');
+         } else {
+            $('#notification-bar').text('An error occurred');
+         }
+      });
+   });
+```
 #2015.11.18 LIZ'S METHOD:
 
 1. make branch: git checkbout -b 'make-products'
@@ -1634,6 +1877,28 @@ actually make the request:
 3. commit
 4. begin process of abstraction: use code(keep javascript out of html);
 
+DEFINITIONS:
+
+`a library` - a collection of functions which are useful when writing web apps.
+Your code is in charge and it calls into the library when it sees fit. E.g.,
+jQuery.
+
+`frameworks` - a particular implementation of a web application, where your code
+fills in the details. The framework is in charge and it calls into your code
+when it needs something app specific. E.g., durandal, ember, etc.
+
+
 LEGEND:
 
 Array.isArray(),
+outputArea = [div#q-results.results, context: document, selector: "#q-results"]
+20
+​
+21
+    $('#spotify-q-button').on("click", function(){
+22
+            var spotifyQueryRequest;
+23
+            spotifyQueryString = $('#spotify-q').val();
+24
+            searchUrl = "https://api.spotify.com/v1/search?type=artist&q=" + spotifyQueryString;
