@@ -163,17 +163,6 @@ Type Selectors target their `element` by type.
 
 ###CSS
 
-```css
-    div { ... }
-```
-
-###HTML
-
-```html
-    <div>...</div>
-    <div>...</div>
-```
-
 ##Class Selectors
 
 Select by `class`. More specific since they select a particular group.
@@ -182,19 +171,6 @@ Class selectors allow us to apply the same styles to different elements at once 
 Within CSS, classes are denoted by a leading period, `.`, followed by the `class attribute value`. Here the `class selector` will select any `element` containing the class attribute value of awesome, including both division and paragraph elements.
 
 ###CSS
-```css
-    .awesome {...}
-```
-
-###HTML
-```html
-    <div class="awesome">...</div>
-    <p class="awesome">...</p>
-```
-
-```html
-    <div>...</div>
-```
 
 ##ID Selectors
 
@@ -203,17 +179,6 @@ ID selectors are even more precise than class selectors, as they target only one
 Regardless of which type of element they appear on, id attribute values can only be used once per page. If used they should be reserved for significant elements.
 
 Within CSS, ID selectors are denoted by a leading hash sign, `#`, followed by the `id attribute valu`e. Here the ID selector will only select the element containing the id attribute value of shayhowe.
-
-```css
-
-    #shayhowe {...}
-
-```
-
-
-```html
-    <div id="shayhowe">...</div>
-```
 
 #Referencing CSS within HTML
 
@@ -964,6 +929,7 @@ function so it sees the data in the calling context
     // call myCallback(jsondata) when "history.json" data is loaded:
     grab("history", myCallback); 
 ```
+
 ##OBJECT properties:
 
 ```js
@@ -1592,7 +1558,18 @@ $('li.hot').addClass('complete');
         });
 ```
 
+##JQUERY BUILDING STRING CONTENT:
 
+ ```js
+    function showEvents(data) {
+        var newContent = '';
+
+    //build up string
+            for (var i = 0; i < data.events.length; i++) {
+
+    }
+    }
+ ```
 
 #Liz Lecture: Parsing Query Strings
 
